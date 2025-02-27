@@ -1,0 +1,200 @@
+abstract class Shape {
+  constructor(private color: string) {}
+  abstract calculateArea(): number;
+  getColor(): string {
+    return this.color;
+  }
+}
+
+class Circle extends Shape {
+  constructor(color: string, private radius: number) {
+    super(color);
+  }
+  calculateArea(): number {
+    return Math.PI * this.radius * this.radius;
+  }
+}
+
+class Rectangle extends Shape {
+  constructor(color: string, private width: number, private height: number) {
+    super(color);
+  }
+  calculateArea(): number {
+    return this.width * this.height;
+  }
+}
+
+interface Vehicle {
+  speed: number;
+  move(): void;
+}
+
+class Car implements Vehicle {
+  constructor(public speed: number) {}
+  move(): void {
+    console.log("Car is moving");
+  }
+}
+
+class Bicycle implements Vehicle {
+  constructor(public speed: number) {}
+  move(): void {
+    console.log("Bicycle is moving");
+  }
+}
+
+interface Flyable {
+  fly(): void;
+}
+
+abstract class Bird {
+  constructor(public name: string) {}
+  eat(): void {
+    console.log("Bird is eating");
+  }
+}
+
+class Eagle extends Bird implements Flyable {
+  fly(): void {
+    console.log("Eagle is flying");
+  }
+}
+
+class Sparrow extends Bird implements Flyable {
+  fly(): void {
+    console.log("Sparrow is flying");
+  }
+}
+
+interface Person {
+  name: string;
+  speak(): void;
+}
+
+interface Employee extends Person {
+  salary: number;
+  work(): void;
+}
+
+class Developer implements Employee {
+  constructor(public name: string, public salary: number) {}
+  speak(): void {
+    console.log("Developer speaking");
+  }
+  work(): void {
+    console.log("Developer working");
+  }
+}
+
+abstract class BankAccount {
+  protected balance: number;
+  constructor(protected accountNumber: number, balance: number) {
+    this.balance = balance;
+  }
+  deposit(amount: number): void {
+    this.balance += amount;
+  }
+  abstract withdraw(amount: number): boolean;
+  getBalance(): number {
+    return this.balance;
+  }
+}
+
+class SavingsAccount extends BankAccount {
+  private withdrawalLimit = 5000;
+  withdraw(amount: number): boolean {
+    if (amount <= this.withdrawalLimit && amount <= this.balance) {
+      this.balance -= amount;
+      return true;
+    }
+    return false;
+  }
+}
+
+class CheckingAccount extends BankAccount {
+  private overdraftLimit = 1000;
+  withdraw(amount: number): boolean {
+    if (amount <= this.balance + this.overdraftLimit) {
+      this.balance -= amount;
+      return true;
+    }
+    return false;
+  }
+}
+
+interface PaymentMethod {
+  pay(amount: number): void;
+  refund(amount: number): void;
+}
+
+class CreditCard implements PaymentMethod {
+  constructor(private balance: number) {}
+  pay(amount: number): void {
+    if (amount <= this.balance) this.balance -= amount;
+  }
+  refund(amount: number): void {
+    this.balance += amount;
+  }
+}
+
+class DebitCard implements PaymentMethod {
+  constructor(private balance: number) {}
+  pay(amount: number): void {
+    if (amount <= this.balance) this.balance -= amount;
+  }
+  refund(amount: number): void {
+    this.balance += amount;
+  }
+}
+
+class UPI implements PaymentMethod {
+  constructor(private balance: number) {}
+  pay(amount: number): void {
+    if (amount <= this.balance) this.balance -= amount;
+  }
+  refund(amount: number): void {
+    this.balance += amount;
+  }
+}
+
+abstract class PaymentGateway {
+  processPayment(amount: number): void {
+    console.log("Processing payment");
+  }
+  processRefund(amount: number): void {
+    console.log("Processing refund");
+  }
+  abstract validateTransaction(transactionId: string): boolean;
+}
+
+interface SecurePayment {
+  authenticateUser(userId: string): boolean;
+}
+
+class PayPal extends PaymentGateway implements SecurePayment {
+  authenticateUser(userId: string): boolean {
+    return true;
+  }
+  validateTransaction(transactionId: string): boolean {
+    return true;
+  }
+}
+
+interface Loan {
+  applyForLoan(amount: number): void;
+}
+
+interface Insurance {
+  applyForInsurance(policy: string): void;
+}
+
+class Customer implements Loan, Insurance {
+  private loanAmount: number = 0;
+  private insurancePolicy: string = "";
+  applyForLoan(amount: number): void {
+    this.loanAmount = amount;
+  }
+  applyForInsurance(policy: string): void {
+    this.insurancePolicy = policy;
+  }
+}
